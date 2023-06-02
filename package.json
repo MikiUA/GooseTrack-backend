@@ -1,5 +1,5 @@
 {
-  "name": "goose-track_backend",
+  "name": "goose-track-backend",
   "version": "0.0.1",
   "description": "",
   "main": "server.js",
@@ -9,7 +9,8 @@
     "dev": "nodemon server.js"
   },
   "author": "Вайтишники/ Вкатуны / Confused Fanboys",
-  "license": "GPL",
+  "license": "GPL", 
+  "engines": { "node": ">=14.20.1" },
   "devDependencies": {
     "nodemon": "^2.0.22"
   },
