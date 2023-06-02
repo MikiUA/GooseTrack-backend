@@ -8,7 +8,7 @@
     "start": "node server.js",
     "dev": "nodemon server.js"
   },
-  "author": "Вайтишники/ Вкатуны / Confused Fanboys",
+  "author": "Вкатуны Вайтишники",
   "license": "GPL",
   "engines": {
     "node": ">=14.20.1"
