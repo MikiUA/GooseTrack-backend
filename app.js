@@ -6,7 +6,7 @@ const cors = require('cors')
 const swaggerUi = require("swagger-ui-express")
 const swaggerDoc = require('./docs/swagger.json');
 
-const { router } = require('./routes/router')
+const { router } = require('./routes/index')
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))
