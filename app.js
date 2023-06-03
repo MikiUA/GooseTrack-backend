@@ -4,21 +4,19 @@ const app = express()
 const logger = require('morgan')
 const cors = require('cors')
 const swaggerUi = require("swagger-ui-express")
-const swagger = require('./docs/swagger.json');
+const swaggerDoc = require('./docs/swagger.json');
+
+const { router } = require('./routes/router')
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))
 app.use(cors())
 app.use(express.json())
+app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc, { filter: true }));
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, { filter: true }));
 
-const specs = swagger;
-app.use(
-    "/swagger",
-    swaggerUi.serve,
-    swaggerUi.setup(specs)
-);
+app.use(router);
 
-//somewhere in here app.use (router)
 app.use((req, res) => {
     res.status(404).json({ message: 'Not found' })
 })
