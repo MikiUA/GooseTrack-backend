@@ -10,7 +10,7 @@ const getUser = async (req, res) => {
 
 const patchUser = async (req, res) => {
     const { userID } = req.params;
-    const newUser = await updateUser(userID);
+    const newUser = await updateUser(userID, req.body);
     if (!newUser) throw new CustomError(404, "User not found");
     res.status(200).send({ ...newUser })
 }
