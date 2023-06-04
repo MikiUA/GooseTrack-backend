@@ -1,10 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const { EMPTYHANDLER } = require('../TODOhandler');
+const { login, register, getNewToken, logout } = require('../../controllers/auth/controllers');
 
-router.post('auth/login', EMPTYHANDLER);
-router.post('auth/signup', EMPTYHANDLER);
-router.get('/auth/refreshToken', EMPTYHANDLER);
-router.delete('/auth/logout', EMPTYHANDLER);
+
+router.post('/login', login);
+router.post('/signup', register);
+router.post('/register', register);
+router.get('/refreshToken', getNewToken);
+router.delete('/logout', logout);
 
 module.exports = { router }
