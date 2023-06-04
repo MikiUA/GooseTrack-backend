@@ -1,3 +1,3 @@
-const userShema = require("./user");
+const User = require("./user");
 
-module.exports = userShema;
+module.exports = { User };
