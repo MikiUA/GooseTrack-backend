@@ -5,8 +5,8 @@ const handled = require('../../helpers/errorHandler')
 const { getUserController, patchUserController, deleteUserController } = require('../../controllers/users');
 const { authentificateUser } = require('../../middleware');
 
-router.get('/:userID', handled(getUserController));
-router.patch('/:userID', authentificateUser, handled(patchUserController));
-router.delete('/:userID', authentificateUser, handled(deleteUserController));
+router.get('/', authentificateUser, handled(getUserController));
+router.patch('/', authentificateUser, handled(patchUserController));
+router.delete('/', authentificateUser, handled(deleteUserController));
 
 module.exports = { router }
