@@ -1,10 +1,21 @@
 const express = require('express');
-const router = express.Router();
-const { EMPTYHANDLER } = require('../TODOhandler');
 
-router.get('/tasks', EMPTYHANDLER);
-router.post('/tasks', EMPTYHANDLER);
-router.patch('/tasks/:taskID', EMPTYHANDLER);
-router.delete('/tasks/:taskID', EMPTYHANDLER);
+const ctrl = require("../../controllers/tasks/tasks");
+
+const { validateBodyTasks, isValidId }  = require('../../middleware');
+
+const { schemas }  = require('../../models/tasks/task'); 
+
+const router = express.Router();
+
+router.get("/", ctrl.getAllTasks);
+
+router.post("/", validateBodyTasks(schemas.addSchemaTasks), ctrl.addTask);
+
+router.patch("/:id/priority", isValidId, validateBodyTasks(schemas.updatePriorityTasksSchema), ctrl.updatePriorityById);
+
+router.put("/:id", isValidId, validateBodyTasks(schemas.addSchemaTasks), ctrl.updateTaskById);
+
+router.delete("/:id", isValidId, ctrl.deleteTaskById);
 
 module.exports = { router }

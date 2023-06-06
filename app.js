@@ -7,6 +7,7 @@ const swaggerUi = require("swagger-ui-express")
 const swaggerDoc = require('./docs/swagger.json');
 
 const { router } = require('./routes/index')
+// const { router } = require("./routes/tasksRouter/index");
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))
@@ -16,6 +17,7 @@ app.use("/swagger", swaggerUi.serve, swaggerUi.setup(swaggerDoc, { filter: true 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, { filter: true }));
 
 app.use(router);
+// app.use("/api/tasks", router);
 
 app.use((req, res) => {
     res.status(404).json({ message: 'Not found' })
