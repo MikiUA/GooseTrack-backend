@@ -1,26 +1,31 @@
 const { findUserByFilter, findUserByEmail, newUser } = require("../../models/users/users");
 const { createToken, createRefreshToken, deleteToken, doRefreshToken } = require("../../models/tokens/tokens");
+const { encryptPassword } = require("../../helpers/passwordEncrypter");
 
 const login = async (req, res) => {
-    const { email, password } = req.body;
+    const { email, password: unsafePassword } = req.body;
     //TODO: validate input fields with joi
-    if (typeof (email) !== 'string' || typeof (password) !== 'string') return res.status(400).send({ message: "missing required email or password fields" })
+    if (typeof (email) !== 'string' || typeof (unsafePassword) !== 'string') return res.status(400).send({ message: "missing required email or password fields" })
+    const password = encryptPassword(unsafePassword);
     const user = await findUserByFilter({ email, password });
     if (!user) return res.status(401).send({ message: "incorrect email or password" });
     const token = createToken(user._id);
-    const refreshToken = createRefreshToken(user._id);
+    const refreshToken = await createRefreshToken(user._id);
+    console.log({ token, refreshToken });
     return res.status(200).send({ token, refreshToken, user })
 }
 
 const register = async (req, res) => {
-    const { name, email, password } = req.body;
+    const { name, email, password: unsafePassword } = req.body;
     //TODO: validate input fields with joi
-    if (typeof (email) !== 'string' || typeof (password) !== 'string' || typeof (name) !== 'string') return res.status(400).send({ message: "missing required name, email or password fields" })
+    if (typeof (email) !== 'string' || typeof (unsafePassword) !== 'string' || typeof (name) !== 'string') return res.status(400).send({ message: "missing required name, email or password fields" })
+    const password = encryptPassword(unsafePassword);
     if (await findUserByEmail(email)) return res.status(409).send({ message: "Email is already used" })
     const user = await newUser({ name, email, password });
+    // console.log(user);
     if (!user) return res.status(500).send({ message: "Server Error" })
     const token = createToken(user._id);
-    const refreshToken = createRefreshToken(user._id);
+    const refreshToken = await createRefreshToken(user._id);
     return res.status(200).send({ token, refreshToken, user })
 }
 

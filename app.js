@@ -18,7 +18,7 @@ app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc, { filter: true
 app.use(router);
 
 app.use((req, res) => {
-    res.status(404).json({ message: 'Not found' })
+    res.status(404).json({ message: 'Endpoint not found' })
 })
 
 app.use((err, req, res, next) => {
