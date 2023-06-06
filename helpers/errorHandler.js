@@ -17,6 +17,7 @@ const wrapper = fn => async (req, res, next) => {
                 });
                 break;
             default:
+                console.log(error);
                 res.status(500).send({
                     status: 'error',
                     message: "Internal Server Error. Sorry for inconvenience",
