@@ -1,21 +1,13 @@
 //what licence to choose
 //where to host
+require("dotenv").config();
+const connectDb = require("./config/connectDB");
+const { app } = require("./app");
 
-require('dotenv').config();
 const PORT = process.env.PORT || 3000;
 
-const { app } = require('./app')
-const mongoose = require('mongoose');
-mongoose.Promise = global.Promise;
+connectDb();
 
-
-const connection = mongoose.connect(process.env.DB_URI);
-connection
-  .then(() => {
-    app.listen(PORT, function () {
-      console.log(`app running on Port ${PORT}`);
-    });
-  })
-  .catch(err =>
-    console.log(`Server not running. Error message: ${err}`),
-  );
+app.listen(process.env.PORT, () => {
+  console.log(`Server running. Use our API on port: ${process.env.PORT}`);
+});
