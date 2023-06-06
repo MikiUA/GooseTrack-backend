@@ -10,15 +10,15 @@ function createToken(_id) {
 async function createRefreshToken(_id) {
     // const token = nanoid();
     const token = jwt.sign({}, 's').split('.')[2];
-    console.log(token);
     await RefreshToken.create({ token: token, userID: _id });
     return token
 }
 
 async function doRefreshToken(refreshToken) {
-    const { userID } = await RefreshToken.findOne({ token: refreshToken })
-    if (!userID) throw ({ status: 404, message: "Refresh token invalid" });
-    return createToken(userID)
+    const token = await RefreshToken.findOne({ token: refreshToken })
+    if (!token) throw ({ status: 404, message: "Refresh token invalid" });
+    console.log(token.userID);
+    return createToken(token.userID)
 }
 
 function deleteToken(token) {
