@@ -2,7 +2,7 @@ const { Review } = require("../../models/index");
 
 const editReview = async (req, res) => {
   try {
-    const { reviewId } = req.params;
+    const { reviewID } = req.params;
     const { message, rating } = req.body;
 
     if (!message) {
@@ -12,10 +12,11 @@ const editReview = async (req, res) => {
       });
     }
 
-    const updateReview = await Review.findByIdAndUpdate({
-      ...req.body,
-      _id: reviewId,
-    });
+    const updateReview = await Review.findByIdAndUpdate(
+      reviewID,
+      { message, rating },
+      { new: true }
+    );
 
     res.status(200).json({
       code: 200,

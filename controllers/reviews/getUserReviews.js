@@ -2,9 +2,9 @@ const { Review } = require("../../models/index");
 
 const getUserReviews = async (req, res) => {
   try {
-    const reviewId = req.params;
-
-    const userReviews = await Review.find();
+    const id = req.user;
+    console.log(id);
+    const userReviews = await Review.find({ owner: id });
 
     res.status(200).json({
       code: 200,

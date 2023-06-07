@@ -1,7 +1,7 @@
 const { model, Schema } = require("mongoose");
 
 const review = Schema({
-  user: {
+  owner: {
     type: Schema.Types.ObjectId,
     ref: "user",
   },
@@ -12,6 +12,15 @@ const review = Schema({
   message: {
     type: String,
     required: [true, "message is required"],
+  },
+  name: {
+    type: String,
+
+    required: [true, "Name is required"],
+  },
+  avatarUrl: {
+    type: String,
+    required: [true, "Avatar is required"],
   },
 });
 

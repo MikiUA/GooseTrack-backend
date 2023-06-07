@@ -2,9 +2,9 @@ const { Review } = require("../../models/index");
 
 const removeReview = async (req, res) => {
   try {
-    const { reviewId } = req.params;
+    const { reviewID } = req.params;
 
-    const result = await Review.findByIdAndRemove({ _id: reviewId });
+    const result = await Review.findByIdAndRemove(reviewID);
     if (!result) {
       return res.status(404).json({ code: 404, message: error.message });
     }

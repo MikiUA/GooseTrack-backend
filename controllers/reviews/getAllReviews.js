@@ -2,10 +2,7 @@ const { Review } = require("../../models/index");
 
 const getAllReviews = async (req, res) => {
   try {
-    const reviews = await Review.find().populate(
-      "user",
-      "_id, name, avatarUrl"
-    );
+    const reviews = await Review.find();
     res.status(200).json({
       code: 200,
       status: "Success",
@@ -18,6 +15,7 @@ const getAllReviews = async (req, res) => {
       status: "error",
       code: 500,
       message: "Failed to fetch reviews",
+      error: error.message,
     });
   }
 };
