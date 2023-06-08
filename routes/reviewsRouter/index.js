@@ -4,7 +4,7 @@ const router = express.Router();
 const reviewCntrl = require("../../controllers/index");
 const { authentificateUser } = require("../../middleware");
 
-router.get("/reviews", authentificateUser, reviewCntrl.getAllReviews);
+router.get("/reviews", reviewCntrl.getAllReviews);
 router.get("/my-reviews", authentificateUser, reviewCntrl.getUserReviews);
 router.post("/my-reviews", authentificateUser, reviewCntrl.addReview);
 router.patch("/:reviewID", authentificateUser, reviewCntrl.editReview);

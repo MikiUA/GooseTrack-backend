@@ -1,4 +1,4 @@
-const { Review } = require("../../models/index");
+const { Review } = require("../../validShemas/index");
 
 const getAllReviews = async (req, res) => {
   try {
