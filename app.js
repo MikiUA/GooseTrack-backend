@@ -7,7 +7,6 @@ const swaggerUi = require("swagger-ui-express")
 const swaggerDoc = require('./docs/swagger.json');
 
 const { router } = require('./routes/index')
-// const { router } = require("./routes/tasksRouter/index");
 
 const formatsLogger = app.get('env') === 'development' ? 'dev' : 'short'
 app.use(logger(formatsLogger))

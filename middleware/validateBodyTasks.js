@@ -1,10 +1,10 @@
-const {HttpError} = require("../helpers");
+const {CustomError} = require("../helpers");
 
 const validateBodyTasks = schema => {
     const func = (req, res, next)=> {
         const { error } = schema.validate(req.body);
         if (error) {
-            next(HttpError(400, error.message));
+            next(new CustomError(400,error.message));
         }
         next()
     }
