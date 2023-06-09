@@ -3,11 +3,12 @@ const router = express.Router();
 
 const reviewCntrl = require("../../controllers/index");
 const { authentificateUser } = require("../../middleware");
+const { middlewareHandler: handled } = require('../../helpers/errorHandling');
 
-router.get("/reviews", reviewCntrl.getAllReviews);
-router.get("/my-reviews", authentificateUser, reviewCntrl.getUserReviews);
-router.post("/my-reviews", authentificateUser, reviewCntrl.addReview);
-router.patch("/:reviewID", authentificateUser, reviewCntrl.editReview);
-router.delete("/:reviewID", authentificateUser, reviewCntrl.removeReview);
+router.get("/reviews", handled(reviewCntrl.getAllReviews));
+router.get("/my-reviews", authentificateUser, handled(reviewCntrl.getUserReviews));
+router.post("/my-reviews", authentificateUser, handled(reviewCntrl.addReview));
+router.patch("/:reviewID", authentificateUser, handled(reviewCntrl.editReview));
+router.delete("/:reviewID", authentificateUser, handled(reviewCntrl.removeReview));
 
 module.exports = { router };

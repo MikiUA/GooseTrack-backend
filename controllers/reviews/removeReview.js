@@ -1,4 +1,4 @@
-const { Review } = require("../../validShemas/index");
+const { Review } = require("../../mongooseSchemas/index");
 
 const removeReview = async (req, res) => {
   try {

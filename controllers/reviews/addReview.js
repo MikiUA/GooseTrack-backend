@@ -1,5 +1,5 @@
-const { Review } = require("../../validShemas/index");
-const { User } = require("../../validShemas/index");
+const { Review } = require("../../mongooseSchemas/index");
+const { User } = require("../../mongooseSchemas/index");
 
 const addReview = async (req, res) => {
   try {

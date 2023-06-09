@@ -1,6 +1,6 @@
 const { model, Schema } = require("mongoose");
 
-const review = Schema({
+const review = new Schema({
   owner: {
     type: Schema.Types.ObjectId,
     ref: "user",

@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 
-const handled = require('../../helpers/errorHandler')
+const { middlewareHandler: handled } = require('../../helpers/errorHandling');
 const { getUserController, patchUserController, deleteUserController } = require('../../controllers/users');
 const { authentificateUser } = require('../../middleware');
 

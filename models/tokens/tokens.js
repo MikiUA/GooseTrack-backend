@@ -1,5 +1,5 @@
 // const nanoid = (...args) => import('nanoid').then(({ nanoid }) => nanoid(...args));
-const { RefreshToken } = require("../../validShemas/index")
+const { RefreshToken } = require("../../mongooseSchemas/index")
 const jwt = require("jsonwebtoken");
 const { TOKEN_SECRET, TOKEN_EXPIERY_TIMER } = process.env
 

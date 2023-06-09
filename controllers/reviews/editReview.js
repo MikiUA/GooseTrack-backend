@@ -1,4 +1,4 @@
-const { Review } = require("../../validShemas/index");
+const { Review } = require("../../mongooseSchemas/index");
 
 const editReview = async (req, res) => {
   try {

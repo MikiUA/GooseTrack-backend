@@ -1,7 +1,7 @@
 // const { nanoid } = require("nanoid");
 // const { sendVerificationMail } = require("../services/email/sendEmail");
 
-const { User } = require("../../validShemas/index");
+const { User } = require("../../mongooseSchemas/index");
 const gravatar = require("gravatar");
 
 
