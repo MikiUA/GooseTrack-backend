@@ -1,3 +1,4 @@
-const userShema = require("./user/index");
+const userShema = require("./users/index");
+const Review = require("./reviews/index");
 
-module.exports = { userShema };
+module.exports = { userShema, Review };

@@ -1,11 +1,13 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { EMPTYHANDLER } = require('../TODOhandler');
 
-router.get('/reviews', EMPTYHANDLER);
-router.get('/my-reviews', EMPTYHANDLER);
-router.post('/my-reviews', EMPTYHANDLER);
-router.patch('/:reviewID', EMPTYHANDLER);
-router.delete('/:reviewID', EMPTYHANDLER);
+const reviewCntrl = require("../../controllers/index");
+const { authentificateUser } = require("../../middleware");
 
-module.exports = { router }
+router.get("/reviews", reviewCntrl.getAllReviews);
+router.get("/my-reviews", authentificateUser, reviewCntrl.getUserReviews);
+router.post("/my-reviews", authentificateUser, reviewCntrl.addReview);
+router.patch("/:reviewID", authentificateUser, reviewCntrl.editReview);
+router.delete("/:reviewID", authentificateUser, reviewCntrl.removeReview);
+
+module.exports = { router };

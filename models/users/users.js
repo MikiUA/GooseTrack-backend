@@ -4,14 +4,17 @@
 const { User } = require("../../validShemas/index");
 const gravatar = require("gravatar");
 
-function findUserByEmail(email) {
-    return User.findOne({ email: email }, ['-password'])
+
+async function findUserByFilter(filter) {
+    if (!filter) return null;
+    const user = User.findOne(filter, ['-password']);
+    return user;
 }
-function findUserByID(_id) {
-    return User.findOne({ _id: _id }, ['-password'])
+async function findUserByEmail(email) {
+    return findUserByFilter({ email });
 }
-async function findUserByFilter(filter = {}) {
-    return User.findOne(filter, ['-password']);
+async function findUserByID(_id) {
+    return findUserByFilter({ _id });
 }
 
 async function newUser({ name, email, password }) {
@@ -19,7 +22,9 @@ async function newUser({ name, email, password }) {
         // const verificationToken=nanoid();
         const avatarUrl = gravatar.url(email);
         const newUser = await User.create({ name, email, password, avatarUrl/*,verificationToken*/ });
+
         if (!newUser) return null
+        newUser.password = undefined;
         // sendVerificationMail({to:email,verificationToken});
         return newUser
     }
@@ -31,8 +36,8 @@ async function newUser({ name, email, password }) {
 async function updateUser(_id, body) {
     const updatedUser = await User.findByIdAndUpdate({ _id }, body, { new: true });
     if (!updatedUser) return null
-    const { password, ...rest } = updatedUser
-    return rest
+    updatedUser.password = undefined;
+    return updatedUser;
 }
 
 async function deleteUser(_id) {
