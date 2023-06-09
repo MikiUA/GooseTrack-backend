@@ -1,8 +1,8 @@
 class CustomError extends Error {
     constructor(status, message) {
         super();
-        this.status = (typeof (Number(status)) === number && Number(status)) || 500;
-        this.message = (typeof (message) === 'string' && message) || 'Internal Server Error. We should fix this soon.';
+        this.status = (typeof (Number(status)) === 'number' && Number(status)) || 500;
+        this.message = (typeof (message) === 'string' && message) || 'Error while processing your request.';
         this.name = 'CustomError';
     }
 }

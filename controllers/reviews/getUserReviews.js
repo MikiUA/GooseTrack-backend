@@ -3,7 +3,6 @@ const { Review } = require("../../mongooseSchemas/index");
 const getUserReviews = async (req, res) => {
   try {
     const id = req.user;
-    console.log(id);
     const userReviews = await Review.find({ owner: id });
 
     res.status(200).json({
@@ -14,7 +13,7 @@ const getUserReviews = async (req, res) => {
       },
     });
   } catch (error) {
-    console.log(error.message);
+    throw error;
   }
 };
 

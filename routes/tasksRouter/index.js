@@ -2,9 +2,9 @@ const express = require('express');
 
 const ctrl = require("../../controllers/tasks/tasks");
 
-const { validateBodyTasks, isValidId, authentificateUser }  = require('../../middleware');
+const { validateBodyTasks, isValidId, authentificateUser } = require('../../middleware');
 
-const { schemas }  = require('../../models/tasks/task'); 
+const { taskSchemas: schemas } = require('../../validationSchemas');
 
 const router = express.Router();
 

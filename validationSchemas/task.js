@@ -12,7 +12,8 @@ const addSchemaTasks = Joi.object({
     startTasks: Joi.string().required(),
     endTasks: Joi.string().required(),
     priorityTasks: Joi.boolean().valid(...priorityList).required(),
-    dataTasks: Joi.date().pattern(dateRegexp).required(),
+    // dataTasks: Joi.date().pattern(dateRegexp).required(),TODO Joi.date().pattern is not a function
+    dataTasks: Joi.string().pattern(dateRegexp).required(),
     categoryTasks: Joi.boolean().valid(...categoryList).required(),
 });
 

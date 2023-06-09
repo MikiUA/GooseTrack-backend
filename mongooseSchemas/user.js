@@ -27,7 +27,7 @@ const user = new Schema({
     type: String,
     required: [true, "Avatar is required"],
   },
-});
+}, { versionKey: false });
 
 const User = model("users", user);
 module.exports = User;

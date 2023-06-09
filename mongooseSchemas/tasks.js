@@ -1,6 +1,10 @@
 const { Schema, model } = require("mongoose");
 const { mongooseHandler } = require("../helpers/errorHandling");
 
+const priorityList = ['low', 'medium', 'high'];
+const categoryList = ['to-do', 'in-progress', 'done'];
+const dateRegexp = /^\d{4}-\d{2}-\d{2}$/;
+
 const taskSchema = new Schema({
     title: {
         type: String,
