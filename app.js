@@ -7,6 +7,7 @@ const swaggerUi = require("swagger-ui-express");
 const swaggerDoc = require("./docs/swagger.json");
 
 const { router } = require("./routes/index");
+const { errorHandler } = require("./helpers/errorHandling");
 
 const formatsLogger = app.get("env") === "development" ? "dev" : "short";
 
@@ -32,8 +33,6 @@ app.use((req, res) => {
   res.status(404).json({ message: "Endpoint not found" });
 });
 
-app.use((err, req, res, next) => {
-  res.status(500).json({ message: err.message });
-});
+app.use(errorHandler);
 
 module.exports = { app };

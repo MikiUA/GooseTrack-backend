@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { login, register, getNewToken, logout } = require('../../controllers/auth/controllers');
-const handled = require('../../helpers/errorHandler')
+const { middlewareHandler: handled } = require('../../helpers/errorHandling');
 
 router.post('/login', handled(login));
 router.post('/signup', handled(register));

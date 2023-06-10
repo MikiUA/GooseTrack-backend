@@ -1,7 +1,11 @@
 // const { nanoid } = require("nanoid");
 // const { sendVerificationMail } = require("../services/email/sendEmail");
 
-const { User } = require("../../validShemas/index");
+const mongoose = require("mongoose");
+const { isValidObjectId } = mongoose;
+const ObjectId = mongoose.Types.ObjectId;
+
+const { User } = require("../../mongooseSchemas/index");
 const gravatar = require("gravatar");
 
 
@@ -10,11 +14,10 @@ async function findUserByFilter(filter) {
     const user = User.findOne(filter, ['-password']);
     return user;
 }
-async function findUserByEmail(email) {
-    return findUserByFilter({ email });
-}
-async function findUserByID(_id) {
-    return findUserByFilter({ _id });
+function findUserByID(id) {
+    if (!id) return null;
+    if (!isValidObjectId(id)) id = new ObjectId(id);
+    return findUserByFilter({ _id: id });
 }
 
 async function newUser({ name, email, password }) {
@@ -49,8 +52,8 @@ async function deleteUser(_id) {
 // async function verifyUserEmail(token){
 //     const verifiedUser=await User.findOneAndUpdate({verificationToken:token},{verified:true,verificationToken:null},{new:true});
 //     if (!verifiedUser) return null
-//     const {email,subscription,_id} = verifiedUser;
-//     return {email,subscription,_id}
+//     verifiedUser.password = undefined;
+//     return verifiedUser
 // }
 
-module.exports = { findUserByEmail, findUserByID, findUserByFilter, newUser, updateUser, deleteUser }
+module.exports = { findUserByFilter, findUserByID, newUser, updateUser, deleteUser }

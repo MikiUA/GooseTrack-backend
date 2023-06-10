@@ -1,4 +1,5 @@
-const { Review } = require("../../validShemas/index");
+const { CustomError } = require("../../helpers/errorHandling");
+const { Review } = require("../../mongooseSchemas/index");
 
 const getAllReviews = async (req, res) => {
   try {
@@ -11,12 +12,7 @@ const getAllReviews = async (req, res) => {
       },
     });
   } catch (error) {
-    res.status(500).json({
-      status: "error",
-      code: 500,
-      message: "Failed to fetch reviews",
-      error: error.message,
-    });
+    throw new CustomError(500, "Failed to fetch reviews");
   }
 };
 

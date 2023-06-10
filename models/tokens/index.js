@@ -1,2 +1,2 @@
-const { createToken, createRefreshToken, refreshTokenFunction, deleteToken } = require('./tokens');
-module.exports = { createToken, createRefreshToken, refreshTokenFunction, deleteToken };
+const { createToken, createRefreshToken, doRefreshToken, deleteToken } = require('./tokens');
+module.exports = { createToken, createRefreshToken, doRefreshToken, deleteToken };

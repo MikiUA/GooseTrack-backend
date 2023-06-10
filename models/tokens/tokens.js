@@ -1,5 +1,6 @@
-// const nanoid = (...args) => import('nanoid').then(({ nanoid }) => nanoid(...args));
-const { RefreshToken } = require("../../validShemas/index")
+const nanoid = import('nanoid');
+const { CustomError } = require('../../helpers/errorHandling');
+const { RefreshToken } = require("../../mongooseSchemas/index")
 const jwt = require("jsonwebtoken");
 const { TOKEN_SECRET, TOKEN_EXPIERY_TIMER } = process.env
 
@@ -8,17 +9,15 @@ function createToken(_id) {
 }
 
 async function createRefreshToken(_id) {
-    // const token = nanoid();
-    const token = jwt.sign({}, 's').split('.')[2];
+    const token = (await nanoid).nanoid(50);
     await RefreshToken.create({ token: token, userID: _id });
     return token
 }
 
 async function doRefreshToken(refreshToken) {
     const token = await RefreshToken.findOne({ token: refreshToken })
-    if (!token) throw ({ status: 404, message: "Refresh token invalid" });
-    console.log(token.userID);
-    return createToken(token.userID)
+    if (!token) throw new CustomError(404, "Refresh token invalid");
+    return { userid: token.userID, token: createToken(token.userID) }
 }
 
 function deleteToken(token) {

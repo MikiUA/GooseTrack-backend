@@ -2,16 +2,16 @@ const express = require('express');
 
 const ctrl = require("../../controllers/tasks/tasks");
 
-const { validateBodyTasks, isValidId, authentificateUser }  = require('../../middleware');
+const { validateBodyTasks, isValidId, authentificateUser } = require('../../middleware');
 
-const { schemas }  = require('../../models/tasks/task'); 
+const { taskSchemas: schemas } = require('../../validationSchemas');
 
 const router = express.Router();
 
-router.get("/tasks", authentificateUser, ctrl.getAllTasks);
-router.post("/tasks", authentificateUser, validateBodyTasks(schemas.addSchemaTasks), ctrl.addTask);
-router.patch("/tasks/:taskID", authentificateUser, isValidId, validateBodyTasks(schemas.updatePriorityTasksSchema), ctrl.updatePriorityById);
-router.put("/tasks/:taskID", authentificateUser, isValidId, validateBodyTasks(schemas.addSchemaTasks), ctrl.updateTaskById);
-router.delete("/tasks/:taskID", authentificateUser, isValidId, ctrl.deleteTaskById);
+router.get("/", authentificateUser, ctrl.getAllTasks);
+router.post("/", authentificateUser, validateBodyTasks(schemas.addSchemaTasks), ctrl.addTask);
+router.patch("/:id", authentificateUser, isValidId, validateBodyTasks(schemas.updateTasksSchema), ctrl.updateTaskById);
+router.put("/:id", authentificateUser, isValidId, validateBodyTasks(schemas.addSchemaTasks), ctrl.replaceTaskById);
+router.delete("/:id", authentificateUser, isValidId, ctrl.deleteTaskById);
 
 module.exports = { router }

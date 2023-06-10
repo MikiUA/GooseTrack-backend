@@ -1,22 +1,19 @@
-const { Review } = require("../../validShemas/index");
+const { Review } = require("../../mongooseSchemas/index");
 
 const removeReview = async (req, res) => {
   try {
-    const { reviewID } = req.params;
+    const { id } = req.params;
 
     const result = await Review.findByIdAndRemove(reviewID);
     if (!result) {
       return res.status(404).json({ code: 404, message: error.message });
     }
-    res.json({
+    res.status(204).json({
       status: "success",
-      code: 200,
-      data: {
-        result,
-      },
+      code: 204
     });
   } catch (error) {
-    console.log(error.message);
+    throw error;
   }
 };
 
