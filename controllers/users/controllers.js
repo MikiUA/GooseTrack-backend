@@ -1,4 +1,4 @@
-const { CustomError } = require("../../helpers/customError");
+const { CustomError } = require("../../helpers/errorHandling");
 const { findUserByID, updateUser, deleteUser } = require("../../models/users");
 
 const getUser = async (req, res) => {

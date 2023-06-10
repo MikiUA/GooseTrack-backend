@@ -1,3 +1,4 @@
+const { UnauthorisedError } = require("../helpers/errorHandling");
 const { validateToken } = require("../models/tokens/tokens");
 
 const authentificateUser = (req, res, next) => {
@@ -11,7 +12,7 @@ const authentificateUser = (req, res, next) => {
         next();
     }
     catch {
-        res.status(401).send({ message: "please authorise with a valid token to access this function" })
+        next(new UnauthorisedError())
     }
 }
 

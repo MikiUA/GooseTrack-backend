@@ -1,5 +1,5 @@
-const { findUserByEmail, findUserByID, findUserByFilter, newUser, updateUser, deleteUser } = require('./users')
+const { findUserByID, findUserByFilter, newUser, updateUser, deleteUser } = require('./users')
 module.exports = {
-    findUserByEmail, findUserByID, findUserByFilter,
+    findUserByID, findUserByFilter,
     newUser, updateUser, deleteUser
 }

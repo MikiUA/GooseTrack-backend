@@ -1,11 +1,14 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const { EMPTYHANDLER } = require('../TODOhandler');
 
-router.get('/reviews', EMPTYHANDLER);
-router.get('/my-reviews', EMPTYHANDLER);
-router.post('/my-reviews', EMPTYHANDLER);
-router.patch('/:reviewID', EMPTYHANDLER);
-router.delete('/:reviewID', EMPTYHANDLER);
+const reviewCntrl = require("../../controllers/index");
+const { authentificateUser, isValidId } = require("../../middleware");
+const { middlewareHandler: handled } = require('../../helpers/errorHandling');
 
-module.exports = { router }
+router.get("/", handled(reviewCntrl.getAllReviews));
+router.get("/my-reviews", authentificateUser, handled(reviewCntrl.getUserReviews));
+router.post("/my-reviews", authentificateUser, handled(reviewCntrl.addReview));
+router.patch("/:id", isValidId, authentificateUser, handled(reviewCntrl.editReview));
+router.delete("/:id", isValidId, authentificateUser, handled(reviewCntrl.removeReview));
+
+module.exports = { router };
