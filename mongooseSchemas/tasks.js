@@ -19,17 +19,17 @@ const taskSchema = new Schema({
         required: [true, 'Set end for task'],
     },
     priority: {
-        type: Boolean,
+        type: String,
         enum: priorityList,
         default: false,
     },
-    data: {
+    date: {
         type: String,
         match: dateRegexp,
         required: [true, 'Set data for task'],
     },
     category: {
-        type: Boolean,
+        type: String,
         enum: categoryList,
         default: false,
     },

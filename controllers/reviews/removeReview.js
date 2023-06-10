@@ -2,7 +2,7 @@ const { Review } = require("../../mongooseSchemas/index");
 
 const removeReview = async (req, res) => {
   try {
-    const { reviewID } = req.params;
+    const { id } = req.params;
 
     const result = await Review.findByIdAndRemove(reviewID);
     if (!result) {

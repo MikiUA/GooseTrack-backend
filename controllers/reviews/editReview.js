@@ -2,7 +2,7 @@ const { ValidationError } = require("../../helpers/errorHandling");
 const { Review } = require("../../mongooseSchemas/index");
 
 const editReview = async (req, res) => {
-  const { reviewID } = req.params;
+  const { id } = req.params;
   const { message, rating: untypedRating } = req.body;
   const rating = untypedRating && Number(untypedRating);
   const updateBody = {
