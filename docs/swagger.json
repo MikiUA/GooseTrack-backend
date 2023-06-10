@@ -2,25 +2,33 @@
     "openapi": "3.0.0",
     "info": {
         "title": "API Title",
-        "description": "API Description",
+        "description": " The Tasks API allows users to manage and retrieve tasks. Users can retrieve tasks, create new tasks, update existing tasks, and delete tasks. Authentication is required for certain routes.\n The Reviews API provides endpoints to manage and retrieve reviews. Users can retrieve all reviews, view their own reviews, create new reviews, update existing reviews, and delete reviews. Authentication is required for all routes except retrieving all reviews.",
         "version": "1.0.0"
     },
     "tags": [
         {
-            "name": "/auth",
-            "description": "authentificain"
+            "name": "Authentification",
+            "description": "Login/Register/Logout and refresh jwt Token"
         },
         {
-            "name": "/users",
-            "description": "user handling"
+            "name": "Users",
+            "description": "Get, Patch or Delete current user"
+        },
+        {
+            "name": "Reviews",
+            "description": "Get all reviews, Get, Post, Patch or Delete reviews of current user"
+        },
+        {
+            "name": "Tasks",
+            "description": "Get, Post, Put(replace), Patch or Delete tasks of current user"
         }
     ],
     "paths": {
-        "/login": {
+        "auth/login": {
             "post": {
                 "summary": "Login to the system",
                 "tags": [
-                    "/auth"
+                    "Authentification"
                 ],
                 "requestBody": {
                     "content": {
@@ -77,11 +85,11 @@
                 }
             }
         },
-        "/signup": {
+        "auth/signup": {
             "post": {
                 "summary": "Create a new user account",
                 "tags": [
-                    "/auth"
+                    "Authentification"
                 ],
                 "requestBody": {
                     "content": {
@@ -139,11 +147,11 @@
                 }
             }
         },
-        "/refreshToken": {
+        "auth/refreshToken": {
             "get": {
                 "summary": "Refresh the access token",
                 "tags": [
-                    "/auth"
+                    "Authentification"
                 ],
                 "security": [
                     {
@@ -175,11 +183,11 @@
                 }
             }
         },
-        "/logout": {
+        "auth/logout": {
             "delete": {
                 "summary": "Logout the user",
                 "tags": [
-                    "/auth"
+                    "Authentification"
                 ],
                 "security": [
                     {
@@ -199,11 +207,11 @@
                 }
             }
         },
-        "/": {
+        "/users": {
             "get": {
                 "summary": "Get user details",
                 "tags": [
-                    "/users"
+                    "Users"
                 ],
                 "description": "Retrieve user details using the provided token.",
                 "security": [
@@ -233,7 +241,7 @@
             "patch": {
                 "summary": "Update user details",
                 "tags": [
-                    "/users"
+                    "Users"
                 ],
                 "description": "Update user details using the provided token and request body.",
                 "security": [
@@ -277,7 +285,7 @@
             "delete": {
                 "summary": "Delete user account",
                 "tags": [
-                    "/users"
+                    "Users"
                 ],
                 "description": "Delete user account using the provided token.",
                 "security": [
@@ -307,6 +315,437 @@
                     }
                 }
             }
+        },
+        "/tasks": {
+            "get": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Retrieve tasks",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "startDate",
+                        "in": "query",
+                        "description": "Start date in YYYY-MM-DD format",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "endDate",
+                        "in": "query",
+                        "description": "End date in YYYY-MM-DD format",
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "code": {
+                                            "type": "integer",
+                                            "example": 200
+                                        },
+                                        "status": {
+                                            "type": "string",
+                                            "example": "Success"
+                                        },
+                                        "data": {
+                                            "type": "object",
+                                            "properties": {
+                                                "result": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "$ref": "#/components/schemas/Task"
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Create a task",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Task"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Task created",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/tasks/{id}": {
+            "put": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Update a task",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Task"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Partially update a task",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Task"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Task updated",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Task"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Tasks"
+                ],
+                "summary": "Delete a task",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Task deleted"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/reviews": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Retrieve all reviews",
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Review"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
+        },
+        "/reviews/my-reviews": {
+            "get": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Retrieve user's reviews",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Successful response",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Review"
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Create a review",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 5
+                                    }
+                                },
+                                "required": [
+                                    "message",
+                                    "rating"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Review created"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    }
+                }
+            }
+        },
+        "/reviews/{id}": {
+            "patch": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Update a review",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "message": {
+                                        "type": "string"
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "minimum": 1,
+                                        "maximum": 5
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Review updated"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Reviews"
+                ],
+                "summary": "Delete a review",
+                "security": [
+                    {
+                        "BearerAuth": []
+                    }
+                ],
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Review deleted"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -321,9 +760,9 @@
             "User": {
                 "type": "object",
                 "properties": {
-                    "id": {
+                    "_id": {
                         "type": "integer",
-                        "format": "int64",
+                        "format": "ObjectID",
                         "example": 1
                     },
                     "name": {
@@ -335,9 +774,106 @@
                         "format": "email",
                         "example": "johndoe@example.com"
                     },
-                    "otherField": {
+                    "avatarUrl": {
                         "type": "string",
-                        "example": "Other field value"
+                        "example": "//url"
+                    },
+                    "birthday": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "nullable": true
+                    },
+                    "phone": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "nullable": true
+                    },
+                    "skype": {
+                        "type": [
+                            "string",
+                            "null"
+                        ],
+                        "nullable": true
+                    }
+                }
+            },
+            "Task": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "integer",
+                        "format": "ObjectID",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "Present the GooseTrack application"
+                    },
+                    "start": {
+                        "type": "string",
+                        "format": "HH:MM",
+                        "example": "09:00"
+                    },
+                    "end": {
+                        "type": "string",
+                        "format": "HH:MM",
+                        "example": "18:00"
+                    },
+                    "priority": {
+                        "type": "string",
+                        "enum": [
+                            "low",
+                            "medium",
+                            "high"
+                        ],
+                        "example": "high"
+                    },
+                    "date": {
+                        "type": "string",
+                        "format": "YYYY-MM-DD",
+                        "example": "2023-06-15"
+                    },
+                    "category": {
+                        "type": "string",
+                        "enum": [
+                            "to-do",
+                            "in-progress",
+                            "done"
+                        ],
+                        "example": "to-do"
+                    }
+                }
+            },
+            "Review": {
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "integer",
+                        "format": "ObjectID"
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "minimum": 1,
+                        "maximum": 5
+                    },
+                    "message": {
+                        "type": "string",
+                        "example": "Great Review! I like the app!"
+                    },
+                    "owner": {
+                        "type": "integer",
+                        "format": "ObjectID",
+                        "$ref": "#/components/schemas/User/_id"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "avatarUrl": {
+                        "type": "string"
                     }
                 }
             }
