@@ -34,18 +34,23 @@ const deleteUserController = async (req, res) => {
 const avatarDir = path.join(__dirname, "../../", "public", "avatars");
 
 const updateAvatar = async (req, res) => {
-  const { _id: id } = req.user;
+  const id = req.user;
   const { path: tempUpload, originalname } = req.file;
 
   const imageName = `${id}_${originalname}`;
+  const resultUpload = path.join(avatarDir, imageName);
 
   try {
-    const resultUpload = path.join(avatarDir, imageName);
     await fs.rename(tempUpload, resultUpload);
 
     const file = await Jimp.read(resultUpload);
 
     await file.resize(250, 250).write(resultUpload);
+
+    const fileStats = await fs.stat(resultUpload);
+    if (!fileStats.isFile()) {
+      throw new Error("Empty file");
+    }
 
     const uploadedImage = await cloudinary.uploader.upload(resultUpload, {
       public_id: imageName,
@@ -53,16 +58,16 @@ const updateAvatar = async (req, res) => {
       transformation: [{ width: 250, height: 250, crop: "fill" }],
     });
 
-    console.log(uploadedImage);
-
     const avatarURL = uploadedImage.secure_url;
 
     await User.findByIdAndUpdate(req.user._id, { avatarURL });
 
     res.json({ avatarURL });
+
+    await fs.unlink(resultUpload);
   } catch (error) {
     console.log(error);
-    // await fs.unlink(tempUpload);
+    await fs.unlink(resultUpload);
     throw error;
   }
 };
