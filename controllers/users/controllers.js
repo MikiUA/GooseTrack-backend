@@ -60,7 +60,11 @@ const updateAvatar = async (req, res) => {
 
     const avatarURL = uploadedImage.secure_url;
 
-    await User.findByIdAndUpdate(req.user._id, { avatarURL });
+    const avatarUpdateFile = await User.findByIdAndUpdate(
+      id,
+      { avatarUrl: avatarURL },
+      { new: true }
+    );
 
     res.json({ avatarURL });
 
