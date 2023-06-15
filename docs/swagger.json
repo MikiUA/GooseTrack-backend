@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.0",
     "info": {
-        "title": "API Title",
+        "title": "API for GooseTrack application",
         "description": " The Tasks API allows users to manage and retrieve tasks. Users can retrieve tasks, create new tasks, update existing tasks, and delete tasks. Authentication is required for certain routes.\n The Reviews API provides endpoints to manage and retrieve reviews. Users can retrieve all reviews, view their own reviews, create new reviews, update existing reviews, and delete reviews. Authentication is required for all routes except retrieving all reviews.",
         "version": "1.0.0"
     },
