@@ -11,7 +11,7 @@
   "author": "Вкатуны Вайтишники",
   "license": "GPL",
   "engines": {
-    "node": ">=14.20.1"
+    "node": ">=14.20.1 <16.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.22"
